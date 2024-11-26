@@ -1,71 +1,68 @@
-body { 
+// Timer für ein einzelnes Element starten
+document.getElementById("start-timer").addEventListener("click", function() {
+    const timeInput = document.getElementById("timer-input").value;
+    let timeRemaining = parseInt(timeInput);
+    const display = document.getElementById("timer-display");
 
-    font-family: Arial, sans-serif; 
+    if (isNaN(timeRemaining) || timeRemaining <= 0) {
+        alert("Bitte gib eine gültige Zeit in Sekunden ein.");
+        return;
+    }
 
-    display: flex; 
+    const timerInterval = setInterval(function() {
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            display.textContent = "Fertig!";
+            display.classList.add("fertig");
+        } else {
+            display.textContent = timeRemaining;
+            timeRemaining--;
+        }
+    }, 1000);
+});
 
-    justify-content: center; 
+// Funktion zum Erstellen mehrerer Timer
+function createMultipleTimers() {
+    const container = document.getElementById("multiple-timers");
 
-    align-items: center; 
+    for (let i = 1; i <= 3; i++) {
+        const timerDiv = document.createElement("div");
+        timerDiv.className = "timer";
+        timerDiv.innerHTML = `
+            <input type="number" id="timer-input-${i}" placeholder="Zeit in Sekunden">
+            <button class="start-multi-timer" data-timer="${i}">Starten</button>
+            <p id="timer-display-${i}">0</p>
+        `;
+        container.appendChild(timerDiv);
+    }
 
-    height: 100vh; 
+    // Event Listener für die Buttons der zusätzlichen Timer
+    const multiButtons = document.querySelectorAll(".start-multi-timer");
+    multiButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const timerId = this.getAttribute("data-timer");
+            const timeInput = document.getElementById(`timer-input-${timerId}`).value;
+            let timeRemaining = parseInt(timeInput);
+            const display = document.getElementById(`timer-display-${timerId}`);
 
-    margin: 0; 
+            if (isNaN(timeRemaining) || timeRemaining <= 0) {
+                alert("Bitte gib eine gültige Zeit in Sekunden ein.");
+                return;
+            }
 
-    background-color: #f4f4f4; 
+            const timerInterval = setInterval(function() {
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "Fertig!";
+                    display.classList.add("fertig");
+                } else {
+                    display.textContent = timeRemaining;
+                    timeRemaining--;
+                }
+            }, 1000);
+        });
+    });
+}
 
-} 
-
-  
-
-.container { 
-
-    text-align: center; 
-
-    width: 400px; 
-
-} 
-
-  
-
-.timer { 
-
-    margin: 20px 0; 
-
-} 
-
-  
-
-input[type="number"] { 
-
-    padding: 10px; 
-
-    font-size: 16px; 
-
-    width: 150px; 
-
-    margin-right: 10px; 
-
-} 
-
-  
-
-button { 
-
-    padding: 10px 20px; 
-
-    font-size: 16px; 
-
-    cursor: pointer; 
-
-} 
-
-  
-
-#timer-display { 
-
-    font-size: 24px; 
-
-    margin-top: 20px; 
-
-} 
+// Mehrere Timer initialisieren
+createMultipleTimers();
