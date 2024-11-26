@@ -1,5 +1,5 @@
-// Timer für ein einzelnes Element starten
-document.getElementById("start-timer").addEventListener("click", function() {
+// Funktion zum Starten eines einzelnen Timers
+document.getElementById("start-timer").addEventListener("click", function () {
     const timeInput = document.getElementById("timer-input").value;
     let timeRemaining = parseInt(timeInput);
     const display = document.getElementById("timer-display");
@@ -9,7 +9,11 @@ document.getElementById("start-timer").addEventListener("click", function() {
         return;
     }
 
-    const timerInterval = setInterval(function() {
+    // Anzeige zurücksetzen, bevor der Timer gestartet wird
+    display.classList.remove("fertig");
+    display.textContent = timeRemaining;
+
+    const timerInterval = setInterval(function () {
         if (timeRemaining <= 0) {
             clearInterval(timerInterval);
             display.textContent = "Fertig!";
@@ -21,7 +25,7 @@ document.getElementById("start-timer").addEventListener("click", function() {
     }, 1000);
 });
 
-// Funktion zum Erstellen mehrerer Timer
+// Funktion zum Erstellen und Starten mehrerer Timer
 function createMultipleTimers() {
     const container = document.getElementById("multiple-timers");
 
@@ -39,7 +43,7 @@ function createMultipleTimers() {
     // Event Listener für die Buttons der zusätzlichen Timer
     const multiButtons = document.querySelectorAll(".start-multi-timer");
     multiButtons.forEach(button => {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function () {
             const timerId = this.getAttribute("data-timer");
             const timeInput = document.getElementById(`timer-input-${timerId}`).value;
             let timeRemaining = parseInt(timeInput);
@@ -50,7 +54,11 @@ function createMultipleTimers() {
                 return;
             }
 
-            const timerInterval = setInterval(function() {
+            // Anzeige zurücksetzen, bevor der Timer gestartet wird
+            display.classList.remove("fertig");
+            display.textContent = timeRemaining;
+
+            const timerInterval = setInterval(function () {
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
                     display.textContent = "Fertig!";
@@ -64,5 +72,5 @@ function createMultipleTimers() {
     });
 }
 
-// Mehrere Timer initialisieren
+// Mehrere Timer erstellen
 createMultipleTimers();
